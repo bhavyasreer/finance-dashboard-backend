@@ -52,11 +52,6 @@ app = FastAPI(
 - Analyst → Read records + dashboard
 - Viewer → Dashboard only
 """,
-)
-@app.get("/")
-def root():
-    return {"message": "API running", "docs": "/docs"}
-
     responses={
         400: {
             "description": "Bad request (e.g. invalid parameters or business rule violation)",
@@ -84,6 +79,9 @@ def root():
         },
     },
 )
+@app.get("/")
+def root():
+    return {"message": "API running", "docs": "/docs"}
 
 # Register exception handlers (order: specific handlers first; global last)
 app.add_exception_handler(HTTPException, http_exception_handler)
