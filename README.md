@@ -1,6 +1,6 @@
 # 🚀 Finance Backend API
 
-> A clean, role-based backend system designed with real-world fintech principles, enabling secure financial data management and analytics through scalable APIs.
+> A clean,secure, role-based backend system designed with real-world fintech principles, enabling secure financial data management and analytics through scalable APIs.
 
 ---
 
@@ -22,7 +22,7 @@ The system focuses on:
 
 * **Backend Framework**: FastAPI
 * **Language**: Python
-* **Database**: SQLite (local); PostgreSQL on Render via `DATABASE_URL` when deployed
+* **Database**: SQLite
 * **ORM**: SQLAlchemy
 * **Validation**: Pydantic
 * **Authentication**: JWT (token-based)
@@ -32,7 +32,7 @@ The system focuses on:
 
 ## 🏗️ Architecture
 
-```text id="arcg7p"
+```
 app/
 ├── routes/      → API endpoints
 ├── services/    → business logic
@@ -66,13 +66,13 @@ app/
 
 ### 🔑 JWT Authentication
 
-```http id="7rqz8g"
+```http
 POST /auth/login
 ```
 
 Response:
 
-```json id="y7k0d9"
+```json
 {
   "access_token": "eyJhbGciOiJIUzI1NiIs...",
   "token_type": "bearer",
@@ -80,9 +80,9 @@ Response:
 }
 ```
 
-Use token in all requests:
+Use token in all protected requests:
 
-```http id="eq6kkz"
+```http
 Authorization: Bearer <token>
 ```
 
@@ -98,19 +98,6 @@ Authorization: Bearer <token>
 
 ---
 
-## 🔑 Bootstrap Admin
-
-A default admin is created on startup if none exists.
-
-```env id="x1a1tn"
-ADMIN_EMAIL=admin@gmail.com
-ADMIN_PASSWORD=admin123456
-```
-
-Ensures system accessibility for initial setup.
-
----
-
 ## 👥 Role-Based Access Control (RBAC)
 
 | Role    | Permissions                   |
@@ -118,30 +105,6 @@ Ensures system accessibility for initial setup.
 | Viewer  | Dashboard only                |
 | Analyst | Records (read) + Dashboard    |
 | Admin   | Full access (users + records) |
-
----
-
-## 🧠 Access Model
-
-* No public signup
-* Users are created by admin only
-* Ensures secure and controlled system usage
-
----
-
-## 🔐 User Onboarding
-
-For simplicity, users are created by the admin with predefined credentials, which are then shared with the respective users for login.
-
-This approach aligns with controlled access models used in internal systems.
-
-In real-world applications, onboarding is typically handled more securely via:
-
-* Invite-based email systems
-* Temporary passwords with forced reset
-* Secure password setup links
-
-These enhancements were intentionally not implemented to keep the system focused and aligned with assignment scope.
 
 ---
 
@@ -158,7 +121,7 @@ These enhancements were intentionally not implemented to keep the system focused
 
 ### 🔍 Search & Filters
 
-```http id="2p7diz"
+```http
 GET /users?search=john
 ```
 
@@ -176,7 +139,7 @@ Filters:
 
 ### ❗ Design Choice
 
-```http id="s5vf2x"
+```http
 PATCH /users/{id}
 DELETE /users/{id}
 ```
@@ -206,28 +169,21 @@ DELETE /users/{id}
 
 ### 🔎 Search
 
-```http id="3hrj3w"
+```http
 GET /records?search=lunch
 ```
 
 Search applies to:
 
-* notes ONLY
-
----
-
-### ❗ Design Decision
-
-* Category removed from search
-* Used strictly as a filter
+* notes only
 
 ✔ Keeps behavior clean and predictable
 
 ---
 
-## 📊 Dashboard / Analytics (Key Strength 🔥)
+## 📊 Dashboard / Analytics (Key Strength)
 
-### APIs:
+### APIs
 
 * `/dashboard/summary`
 * `/dashboard/category-breakdown`
@@ -236,7 +192,7 @@ Search applies to:
 
 ---
 
-### Features:
+### Features
 
 * Aggregated financial insights
 * Category-based analysis
@@ -245,21 +201,12 @@ Search applies to:
 
 ---
 
-## 📈 Adaptive Trends
-
-* ≤ 31 days → daily aggregation
-* > 31 days → monthly aggregation
-
-✔ Provides meaningful and context-aware insights
-
----
-
 ## 🛡️ Security
 
 * Passwords hashed using bcrypt
 * No password exposure in API responses
 * JWT required for protected endpoints
-* Role-based checks enforced across APIs
+* Role-based checks enforced
 
 ---
 
@@ -282,128 +229,108 @@ Search applies to:
 
 ---
 
-## 🧪 How to Test
+## 🌐 Live API & Documentation
 
-### Step 1: Run Server
+* **Live API**: https://finance-dashboard-backend-g30n.onrender.com
+* **Swagger Docs**: https://finance-dashboard-backend-g30n.onrender.com/docs
 
-```bash id="rd9hqi"
-uvicorn app.main:app --reload
+---
+
+## 🧪 How to Test the API
+
+### 1. Open API Documentation
+
+Access the live Swagger UI:
+
+https://finance-dashboard-backend-g30n.onrender.com/docs
+
+This provides an interactive interface to explore and test all API endpoints.
+### 2. Authenticate
+
+Use the login endpoint to obtain a JWT token:
+
+```http
+POST /auth/login
+```
+
+Provide valid credentials for an existing user (e.g., bootstrap admin created at startup).
+
+---
+
+### 3. Authorize
+
+1. Copy the `access_token` from the response
+2. Click **Authorize** in Swagger
+3. Enter:
+
+```
+Bearer <your_token>
 ```
 
 ---
 
-### Step 2: Open Swagger
+### 4. Test Core Features
 
-```id="8y93qf"
-http://127.0.0.1:8000/docs
-```
+#### 👤 User Management (Admin)
 
----
-
-### Step 3: Login (Admin)
-
-```id="6mg3qg"
-email: admin@gmail.com
-password: admin123456
-```
+* Create users
+* Assign roles
+* Activate/deactivate users
 
 ---
 
-### Step 4: Authorize
+#### 🔄 Role-Based Access
 
-Click **Authorize** and paste:
+* Login as created user
+* Test role restrictions
 
-```id="ux24k4"
-Bearer <token>
-```
+Examples:
 
----
-
-### Step 5: Test Flow
-
-1. Create user (analyst)
-2. Login as analyst
-3. Access records and dashboard
-4. Try creating record → ❌ 403 Forbidden
+* Analyst → cannot create records (403)
+* Viewer → dashboard-only access
 
 ---
 
-## 🧾 Example Response
+#### 💰 Records
 
-```json id="1px3nx"
-{
-  "total_income": 100000,
-  "total_expense": 50000,
-  "net_balance": 50000
-}
-```
+* Create records (Admin)
+* Fetch records using filters & search
 
 ---
 
-## 🧪 Edge Cases Handled
+#### 📊 Dashboard
+
+Test:
+
+* `/dashboard/summary`
+* `/dashboard/category-breakdown`
+* `/dashboard/monthly-trends`
+* `/dashboard/recent`
+
+---
+
+### ⚠️ Expected Behavior
 
 * Invalid login → 401 Unauthorized
 * Unauthorized access → 403 Forbidden
-* Non-existent resources → 404 Not Found
-* Invalid input → structured validation errors
-* Empty results → meaningful responses
-
----
-
-## 🏦 Real-World Relevance
-
-* Admin-controlled access reflects internal financial systems
-* RBAC ensures controlled handling of sensitive data
-* Soft delete supports audit and recovery scenarios
-* Dashboard APIs simulate real analytics systems
-* JWT aligns with modern API security practices
-
----
-
-## ⚡ Performance Considerations
-
-* Aggregations handled at database level
-* Pagination limits response size
-* Filters reduce unnecessary data processing
-* Lightweight DB ensures fast local execution
-
----
-
-## 🧩 Additional Features
-
-* Pagination
-* Filtering
-* Search
-* Soft delete
-* Structured error handling
-* Swagger documentation with proper tags
-
----
-
-## ⚙️ Environment Variables
-
-```env id="6cjlwm"
-JWT_SECRET_KEY=your_secret_key
-ADMIN_EMAIL=admin@gmail.com
-ADMIN_PASSWORD=admin123456
-DATABASE_URL=sqlite:///./finance.db
-```
+* Invalid input → 422 Validation Error
+* Not found → 404
 
 ---
 
 ## ⚖️ Trade-offs & Assumptions
 
-* SQLite used for simplicity and ease of setup
+* SQLite used for simplicity
 * No public signup (security-first design)
-* Simple RBAC over complex permission systems
-* Search limited to text fields for clarity
-* Focus on backend design rather than infrastructure
+* Simple RBAC over complex permissions
+* Search limited to text fields
+* Focus on backend design over infrastructure
 
 ---
 
 ## 🚀 Future Improvements
 
-* Multi-tenant architecture
+* Multi-tenant support
 * Fine-grained permissions
 * Audit logging
 * Export reports (CSV/PDF)
@@ -417,7 +344,7 @@ This project demonstrates:
 
 * Strong backend architecture
 * Secure authentication and RBAC
-* Thoughtful API design decisions
+* Thoughtful API design
 * Real-world fintech system modeling
 * APIs optimized for frontend consumption
 
