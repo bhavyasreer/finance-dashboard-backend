@@ -1,6 +1,3 @@
-# Blueprint: https://render.com/docs/blueprint-spec
-# Set in the Render dashboard: JWT_SECRET_KEY (required for stable tokens in production),
-# DATABASE_URL (from a Render PostgreSQL instance if you want persistent data).
 services:
   - type: web
     name: finance-backend
