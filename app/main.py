@@ -52,6 +52,10 @@ app = FastAPI(
 - Analyst → Read records + dashboard
 - Viewer → Dashboard only
 """,
+@app.get("/")
+def root():
+    return {"message": "API running", "docs": "/docs"}
+
     responses={
         400: {
             "description": "Bad request (e.g. invalid parameters or business rule violation)",
