@@ -1,0 +1,10 @@
+# Runtime dependencies for production (e.g. Render) and local development.
+fastapi==0.135.3
+uvicorn[standard]==0.43.0
+sqlalchemy==2.0.49
+pydantic==2.12.5
+email-validator==2.3.0
+bcrypt==5.0.0
+python-jose[cryptography]==3.5.0
+# Required when DATABASE_URL points to PostgreSQL (Render Postgres, etc.)
+psycopg2-binary==2.9.10
