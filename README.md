@@ -74,7 +74,7 @@ Response:
 
 ```json
 {
-  "access_token": "eyJhbGciOiJIUzI1NiIs...",
+  "access_token": "eyJhbGciOiJIUzI1NiIs....",
   "token_type": "bearer",
   "message": "Login successful"
 }
