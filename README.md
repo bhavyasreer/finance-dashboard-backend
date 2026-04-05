@@ -197,7 +197,7 @@ Search applies to:
 * Aggregated financial insights
 * Category-based analysis
 * Time-based trends
-* Recent activity
+* Recent activity(latest transactions sorted by date)
 
 ---
 
@@ -350,4 +350,4 @@ This project demonstrates:
 
 ---
 
-💬 *Built with a focus on clarity, security, and production-level backend practices.*
+💬 *Built with a focus on clarity, security, and real world backend practices.*
