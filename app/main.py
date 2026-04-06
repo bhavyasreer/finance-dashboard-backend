@@ -89,7 +89,7 @@ app.add_exception_handler(RequestValidationError, validation_exception_handler)
 app.add_exception_handler(Exception, unhandled_exception_handler)
 
 # Routers
+app.include_router(auth_routes.router, prefix="/auth", tags=["Auth"])
 app.include_router(user_routes.router, prefix="/users", tags=["Users"])
 app.include_router(record_routes.router, prefix="/records", tags=["Records"])
 app.include_router(dashboard_routes.router, prefix="/dashboard", tags=["Dashboard"])
-app.include_router(auth_routes.router, prefix="/auth", tags=["Auth"])
